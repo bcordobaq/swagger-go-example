@@ -13,7 +13,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/swaggo/http-swagger"
 
-	"github.com/ldej/swagger-go-example/swaggo/swagger"
+	"github.com/bcordobaq/swagger-go-example/swaggo/swagger"
 )
 
 // @title A thing server
