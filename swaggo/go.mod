@@ -1,4 +1,4 @@
-module github.com/ldej/swagger-go-example/swaggo
+module github.com/bcordobaq/swagger-go-example/swaggo
 
 go 1.16
 
