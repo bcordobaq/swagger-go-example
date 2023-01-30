@@ -1,0 +1,236 @@
+components:
+  schemas:
+    CreateThing:
+      properties:
+        name:
+          example: Some name
+          type: string
+        value:
+          example: Some value
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        error:
+          description: Error message
+          example: An error occurred
+          type: string
+      type: object
+    ThingResponse:
+      properties:
+        created:
+          description: Time when the Thing was created.
+          example: "2021-05-25T00:53:16.535668Z"
+          format: date-time
+          type: string
+        name:
+          description: Name for the thing
+          example: Some name
+          type: string
+        updated:
+          description: Time when the Thing was last updated
+          example: "2021-05-25T00:53:16.535668Z"
+          format: date-time
+          type: string
+        uuid:
+          description: UUID of the thing
+          example: 6204037c-30e6-408b-8aaa-dd8219860b4b
+          type: string
+        value:
+          description: Value for the thing
+          example: Some value
+          type: string
+      type: object
+    ThingsResponse:
+      properties:
+        limit:
+          type: integer
+        page:
+          type: integer
+        things:
+          items:
+            $ref: "#/components/schemas/ThingResponse"
+          type: array
+        total:
+          type: integer
+      type: object
+    UpdateThing:
+      properties:
+        value:
+          example: Update value
+          type: string
+      type: object
+info:
+  contact:
+    email: barbaracordobaq@gmail.com
+    name: Barbara Cordoba
+  description: A thing server full description
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: A thing server
+  version: "1.0"
+openapi: 3.0.0
+paths:
+  /thing:
+    get:
+      description: " This is the description for listing things. Which can be longer."
+      parameters:
+        - description: Page
+          in: query
+          name: page
+          schema:
+            description: Page
+            format: int64
+            type: integer
+        - description: Limit (max 100)
+          in: query
+          name: limit
+          schema:
+            description: Limit (max 100)
+            format: int64
+            type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThingsResponse"
+          description: ""
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: ""
+      summary: This is the summary for listing things
+  /thing/{uuid}:
+    delete:
+      description: " This is the description for deleting a thing. Which can be longer."
+      parameters:
+        - description: The UUID of a thing
+          in: path
+          name: uuid
+          required: true
+          schema:
+            description: The UUID of a thing
+            format: string
+            type: string
+      responses:
+        "204":
+          description: ""
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: ""
+      summary: This is the summary for deleting a thing
+    get:
+      description:
+        " This is the description for getting a thing by its UUID. Which
+        can be longer, and can continue over multiple lines"
+      parameters:
+        - description: The UUID of a thing
+          in: path
+          name: uuid
+          required: true
+          schema:
+            description: The UUID of a thing
+            format: string
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThingResponse"
+          description: Thing requested by ID
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: ""
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: ""
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: ""
+      summary: This is the summary for getting a thing by its UUID
+      tags:
+        - thing
+    put:
+      description: " This is the description for updating a thing. Which can be longer."
+      parameters:
+        - description: The UUID of a thing
+          in: path
+          name: uuid
+          required: true
+          schema:
+            description: The UUID of a thing
+            format: string
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateThing"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThingResponse"
+          description: ""
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: ""
+      summary: This is the summary for updating a thing
+  /thing/new:
+    post:
+      description: " This is the description for creating a thing. Which can be longer."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateThing"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ThingResponse"
+          description: ""
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: ""
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+          description: ""
+      summary: This is the summary for creating a thing
+      tags:
+        - thing
+servers:
+  - description: " localhost"
+    url: localhost:8080
+  - description: " localhost2"
+    url: localhost:9090
